@@ -54,7 +54,7 @@ func (h *Handlers) LoadData(w http.ResponseWriter, r *http.Request) {
 		err := h.buyerService.RegisterBuyers(timestamp, &wg)
 		if err != nil {
 			fmt.Println(err)
-			reg.BuyerResponse = "fail buyer registration"
+			reg.BuyerResponse = "Buyers of this date already exist"
 		} else {
 			fmt.Println("successfull buyer registration")
 			reg.BuyerResponse = "successfull buyer registration"
@@ -65,7 +65,7 @@ func (h *Handlers) LoadData(w http.ResponseWriter, r *http.Request) {
 		err := h.productService.RegisterProducts(timestamp, &wg)
 		if err != nil {
 			fmt.Println(err)
-			reg.ProductResponse = "fail product registration"
+			reg.ProductResponse = "Products of this date already exist"
 		} else {
 			fmt.Println("successfull product registration")
 			reg.ProductResponse = "successfull product registration"
@@ -76,7 +76,7 @@ func (h *Handlers) LoadData(w http.ResponseWriter, r *http.Request) {
 		err := h.transactionService.RegisterTransactions(timestamp, &wg)
 		if err != nil {
 			fmt.Println(err)
-			reg.TransactionResponse = "fail transaction registration"
+			reg.TransactionResponse = "Transactions for this date already exist"
 		} else {
 			fmt.Println("successfull transaction registration")
 			reg.TransactionResponse = "successfull transaction registration"
@@ -119,19 +119,3 @@ func getDataFromTimestamp(r *http.Request) string {
 	}
 	return timeUnix.Date
 }
-
-/* 	var wg sync.WaitGroup
-wg.Add(2)
-go func() {
-	history, err := h.consultBuyer.GetPurchaseHistory(buyerId, &wg)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Fprintf(w, string(history))
-}()
-var sameIps []byte
-go func() {
-	sameIps, _ = h.consultBuyer.GetBuyersSameIP(buyerId, &wg)
-}()
-wg.Wait()
-fmt.Fprintf(w, "\n\n\n\n\n"+string(sameIps)) */

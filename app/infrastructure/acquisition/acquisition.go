@@ -47,7 +47,7 @@ func (acq *Acquisition) GetProducts() []*model.Product {
 		idNamePrice := strings.Split(splitNewLine[i], "'")
 		name := cleanText(idNamePrice[1])
 		name = strings.ReplaceAll(name, "\"", "")
-		price, _ := strconv.Atoi(idNamePrice[2])
+		price, _ := strconv.Atoi(idNamePrice[len(idNamePrice)-1])
 		product := model.NewProduct(idNamePrice[0], name, uint16(price), date)
 		products = append(products, product)
 	}

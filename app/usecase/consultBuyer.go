@@ -84,8 +84,7 @@ func (cb *consultbuyerUsecase) GetBuyersSameIP(buyerId string) ([]*Buyer, error)
 
 func (cb *consultbuyerUsecase) GetRecommendations(buyers []*Buyer) ([]*Product, error) {
 	var recommendedProducts []*Product
-	for index := 0; index < 3; index++ {
-		fmt.Println("-----------------------------------------------------")
+	for index := 0; index < 2; index++ {
 		buyerProductHistory, err := cb.GetPurchaseHistory(buyers[index].BuyerId)
 		if err != nil {
 			fmt.Println(err)
@@ -99,6 +98,7 @@ func (cb *consultbuyerUsecase) GetRecommendations(buyers []*Buyer) ([]*Product, 
 }
 
 type buyerInformation struct {
+	Buyer *Buyer `json:"buyer,omitempty"`
 	PurchaseHistory []*Product `json:"purchaseHistory,omitempty"`
 	OtherBuyers     []*Buyer   `json:"otherBuyers,omitempty"`
 	Recomendations  []*Product `json:"recomendations,omitempty"`
@@ -106,6 +106,8 @@ type buyerInformation struct {
 
 func (cb *consultbuyerUsecase) GetBuyerInformation(buyerId string) *buyerInformation {
 	buyerInformation := &buyerInformation{}
+	buyer, _ := cb.repoBuyer.GetBuyersByBuyerId(buyerId)
+	buyerInformation.Buyer = toBuyer(buyer)[0]
 	buyerInformation.PurchaseHistory, _ = cb.GetPurchaseHistory(buyerId)
 	buyerInformation.OtherBuyers, _ = cb.GetBuyersSameIP(buyerId)
 	buyerInformation.Recomendations, _ = cb.GetRecommendations(buyerInformation.OtherBuyers)
